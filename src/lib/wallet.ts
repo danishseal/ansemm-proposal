@@ -37,11 +37,11 @@ export function availableWallets(): Array<{ kind: WalletKind; label: string }> {
   return out;
 }
 
-export const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID ?? "bwick-1";
+export const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID ?? "ansem-1";
 export const RPC =
   process.env.NEXT_PUBLIC_BWICK_RPC ??
   process.env.NEXT_PUBLIC_RPC_ENDPOINT ??
-  "http://167.99.147.85/rpc";
+  "http://rpc.ansemchain.fun:26657";
 export const DENOM = process.env.NEXT_PUBLIC_BWICK_DENOM ?? "uchanse";
 
 const CHAIN_INFO = {
@@ -51,7 +51,7 @@ const CHAIN_INFO = {
   rest:
     process.env.NEXT_PUBLIC_BWICK_REST ??
     process.env.NEXT_PUBLIC_REST_ENDPOINT ??
-    "http://167.99.147.85/rest",
+    "http://rest.ansemchain.fun:1317",
   bip44: { coinType: 118 },
   bech32Config: {
     bech32PrefixAccAddr: "ansem",
