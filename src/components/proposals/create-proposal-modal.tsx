@@ -30,7 +30,8 @@ export function CreateProposalButton() {
 }
 
 function CreateProposalModal({ onClose }: { onClose: () => void }) {
-  const { address, available, connect, connecting, submitProposal } = useWallet();
+  const { address, available, connect, connecting, submitProposal } =
+    useWallet();
   const queryClient = useQueryClient();
 
   const [mode, setMode] = useState<Mode>("binary");
@@ -47,8 +48,13 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
   );
 
   const memoBytes = useMemo(() => {
-    const opts = mode === "ballot" && cleanOptions.length >= 2 ? cleanOptions : undefined;
-    const memo = encodeProposalMemo(title.trim() || " ", description.trim() || " ", opts);
+    const opts =
+      mode === "ballot" && cleanOptions.length >= 2 ? cleanOptions : undefined;
+    const memo = encodeProposalMemo(
+      title.trim() || " ",
+      description.trim() || " ",
+      opts,
+    );
     return new TextEncoder().encode(memo).length;
   }, [title, description, cleanOptions, mode]);
 
@@ -72,7 +78,9 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
     setOptions((prev) => (prev.length >= MAX_OPTIONS ? prev : [...prev, ""]));
   }
   function removeOption(i: number) {
-    setOptions((prev) => (prev.length <= 2 ? prev : prev.filter((_, idx) => idx !== i)));
+    setOptions((prev) =>
+      prev.length <= 2 ? prev : prev.filter((_, idx) => idx !== i),
+    );
   }
 
   async function submit() {
@@ -115,15 +123,20 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
 
         {txHash ? (
           <div className="mt-5 rounded-[16px] border border-[#6cef4b]/30 bg-[#6cef4b]/10 p-5 text-center">
-            <p className="text-[15px] font-semibold text-[#6cef4b]">Proposal submitted.</p>
-            <p className="mt-1 break-all font-mono text-[12px] text-[#8f8f8f]">{txHash}</p>
+            <p className="text-[15px] font-semibold text-[#6cef4b]">
+              Proposal submitted.
+            </p>
+            <p className="mt-1 break-all font-mono text-[12px] text-[#8f8f8f]">
+              {txHash}
+            </p>
             <p className="mt-2 text-[12px] text-[#b5b5b5]">
-              It appears in the feed within a few seconds once the relayer indexes the memo.
+              It appears in the feed within a few seconds once the relayer
+              indexes the memo.
             </p>
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 h-10 rounded-full bg-[#6cef4b] px-6 text-[14px] font-bold text-black"
+              className="mt-4 h-10 rounded-full bg-[#6cef4b] px-6 text-[14px] font-bold text-[#050505]"
             >
               Done
             </button>
@@ -131,11 +144,21 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
         ) : (
           <>
             <div className="mt-5 flex gap-2">
-              <ModeTab label="Yes / No" active={mode === "binary"} onClick={() => setMode("binary")} />
-              <ModeTab label="Multi-option ballot" active={mode === "ballot"} onClick={() => setMode("ballot")} />
+              <ModeTab
+                label="Yes / No"
+                active={mode === "binary"}
+                onClick={() => setMode("binary")}
+              />
+              <ModeTab
+                label="Multi-option ballot"
+                active={mode === "ballot"}
+                onClick={() => setMode("ballot")}
+              />
             </div>
 
-            <label className="mt-5 block text-[13px] font-semibold text-[#b5b5b5]">Title</label>
+            <label className="mt-5 block text-[13px] font-semibold text-[#b5b5b5]">
+              Title
+            </label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -143,7 +166,9 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
               className="mt-2 h-11 w-full rounded-[12px] border border-white/10 bg-[#161616] px-4 text-[14px] text-white outline-none placeholder:text-[#6f6f6f] focus:border-[#6cef4b]"
             />
 
-            <label className="mt-4 block text-[13px] font-semibold text-[#b5b5b5]">Description</label>
+            <label className="mt-4 block text-[13px] font-semibold text-[#b5b5b5]">
+              Description
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -191,13 +216,21 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
             ) : null}
 
             <div className="mt-4 flex items-center justify-between text-[12px]">
-              <span className={overLimit ? "font-semibold text-[#ff5a52]" : "text-[#6f6f6f]"}>
+              <span
+                className={
+                  overLimit ? "font-semibold text-[#ff5a52]" : "text-[#6f6f6f]"
+                }
+              >
                 Memo {memoBytes}/{MEMO_LIMIT} bytes
               </span>
-              <span className="text-[#6f6f6f]">Costs 1 CHANSE to the treasury (anti-spam)</span>
+              <span className="text-[#6f6f6f]">
+                Costs 1 CHANSE to the treasury (anti-spam)
+              </span>
             </div>
 
-            {error ? <p className="mt-3 text-[12px] text-[#ff5a52]">{error}</p> : null}
+            {error ? (
+              <p className="mt-3 text-[12px] text-[#ff5a52]">{error}</p>
+            ) : null}
 
             <div className="mt-5">
               {!address ? (
@@ -205,7 +238,7 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
                   type="button"
                   disabled={connecting || available.length === 0}
                   onClick={() => connect()}
-                  className="h-11 w-full rounded-full bg-white text-[14px] font-bold text-black disabled:opacity-60"
+                  className="h-11 w-full rounded-full bg-white text-[14px] font-bold text-[#050505] disabled:opacity-60"
                 >
                   {available.length === 0
                     ? "Install ANSEM Wallet or Keplr"
@@ -218,7 +251,7 @@ function CreateProposalModal({ onClose }: { onClose: () => void }) {
                   type="button"
                   disabled={!canSubmit}
                   onClick={submit}
-                  className="h-11 w-full rounded-full bg-[#6cef4b] text-[14px] font-bold text-black transition hover:bg-[#5ce03c] disabled:opacity-40"
+                  className="h-11 w-full rounded-full bg-[#6cef4b] text-[14px] font-bold text-[#050505] transition hover:bg-[#5ce03c] disabled:opacity-40"
                 >
                   {submitting ? "Signing…" : "Submit proposal"}
                 </button>
@@ -246,7 +279,7 @@ function ModeTab({
       onClick={onClick}
       className={`flex-1 rounded-[12px] px-3 py-2 text-[13px] font-semibold transition ${
         active
-          ? "bg-[#6cef4b] text-black"
+          ? "bg-[#6cef4b] text-[#050505]"
           : "border border-white/10 bg-[#161616] text-[#b5b5b5] hover:text-white"
       }`}
     >
