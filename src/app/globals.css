@@ -1,0 +1,502 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sf-pro-rounded);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 2px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 14px);
+  --radius-4xl: calc(var(--radius) + 18px);
+}
+
+:root {
+  --radius: 20px;
+  --background: #000000;
+  --foreground: #f4f4f4;
+  --card: #0b0b0b;
+  --card-foreground: #f4f4f4;
+  --popover: #0b0b0b;
+  --popover-foreground: #f4f4f4;
+  --primary: #6cef4b;
+  --primary-foreground: #000000;
+  --secondary: #151515;
+  --secondary-foreground: #f4f4f4;
+  --muted: #151515;
+  --muted-foreground: #a0a0a0;
+  --accent: #6cef4b;
+  --accent-foreground: #000000;
+  --destructive: #ff5c5c;
+  --border: rgba(153, 255, 171, 0.16);
+  --input: rgba(153, 255, 171, 0.2);
+  --ring: #6cef4b;
+  --chart-1: #6cef4b;
+  --chart-2: #a0f58b;
+  --chart-3: #176b2b;
+  --chart-4: #13251a;
+  --chart-5: #07110b;
+  --sidebar: #000000;
+  --sidebar-foreground: #f4f4f4;
+  --sidebar-primary: #6cef4b;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #151515;
+  --sidebar-accent-foreground: #f4f4f4;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: #6cef4b;
+  --surface-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body {
+    overscroll-behavior: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sf-pro-rounded), sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+
+  [data-slot="card"],
+  [data-slot="dialog-content"],
+  [data-slot="tabs-list"],
+  .bento-card,
+  .bento-card-muted {
+    border-radius: 26px;
+    border-color: var(--border);
+    background: var(--card);
+    box-shadow: var(--surface-shadow);
+  }
+
+  [data-slot="dialog-overlay"] {
+    background-color: rgba(0, 0, 0, 0.35);
+  }
+
+  .welcome-modal-surface {
+    border-radius: 18px !important;
+  }
+
+  .welcome-modal-chip {
+    border-radius: 14px !important;
+  }
+
+  .welcome-modal-dot {
+    border-radius: 9999px !important;
+  }
+
+  ::selection {
+    background: #6cef4b;
+    color: #000000;
+  }
+}
+
+.dark .bg-white { background-color: var(--card) !important; }
+.dark .text-black { color: var(--foreground) !important; }
+.dark .bg-primary { background-color: #6cef4b !important; }
+.dark .text-primary { color: #6cef4b !important; }
+.dark .border-primary { border-color: #6cef4b !important; }
+.dark .ticker-live-inner {
+  background: #0b0b0b !important;
+  border-color: rgba(108, 239, 75, 0.18) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+@layer utilities {
+  @keyframes ticker-shake {
+    0%,
+    76%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    80% {
+      transform: translate3d(-0.5px, 0, 0) rotate(-0.6deg);
+    }
+
+    84% {
+      transform: translate3d(0.8px, 0, 0) rotate(0.7deg);
+    }
+
+    88% {
+      transform: translate3d(-0.8px, 0, 0) rotate(-0.6deg);
+    }
+
+    92% {
+      transform: translate3d(0.4px, 0, 0) rotate(0.4deg);
+    }
+  }
+
+  @keyframes frenzy-banner-border {
+    0% {
+      filter: hue-rotate(0deg);
+      background-position: 0% 50%;
+    }
+
+    50% {
+      filter: hue-rotate(18deg);
+      background-position: 100% 50%;
+    }
+
+    100% {
+      filter: hue-rotate(0deg);
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes rainbow-rotate {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  @keyframes frenzy-rainbow-rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes frenzy-banner-twinkle {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.8);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1.12);
+    }
+  }
+
+  @keyframes frenzy-banner-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.72) translateY(6px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes custom-banner-float {
+    0%,
+    100% {
+      translate: 0 -3px;
+    }
+
+    50% {
+      translate: 0 7px;
+    }
+  }
+
+  .ticker-shake {
+    animation: ticker-shake 2.2s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .ticker-live-slot {
+    position: relative;
+    border-radius: 26px;
+    padding: 1px;
+    overflow: hidden;
+    background: transparent;
+    animation: ticker-live-sequence 1.2s linear infinite;
+    animation-delay: var(--slot-delay, 0s);
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .ticker-live-rainbow {
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 360px;
+    height: 360px;
+    margin-left: -180px;
+    margin-top: -180px;
+    background: conic-gradient(from 0deg, #f9ff50 0%, #66e6ff 25%, #dbf6ff 50%, #ffcedd 75%, #f9ff50 100%);
+    opacity: 0;
+    animation: frenzy-rainbow-rotate 3s linear infinite;
+  }
+
+  .ticker-live-inner {
+    position: relative;
+    border-radius: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    z-index: 1;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  }
+
+  @keyframes ticker-live-sequence {
+    0%,
+    82%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    84% {
+      transform: translateX(-2px);
+    }
+
+    88% {
+      transform: translateX(2px);
+    }
+
+    92% {
+      transform: translateX(-2px);
+    }
+
+    96% {
+      transform: translateX(2px);
+    }
+  }
+
+  @keyframes ticker-live-gradient {
+    0%,
+    82%,
+    100% {
+      opacity: 0;
+    }
+
+    84%,
+    99% {
+      opacity: 1;
+    }
+  }
+
+  .ticker-live-slot .ticker-live-rainbow {
+    animation:
+      frenzy-rainbow-rotate 3s linear infinite,
+      ticker-live-gradient 1.2s linear infinite;
+    animation-delay: 0s, var(--slot-delay, 0s);
+  }
+
+  .frenzy-banner-border {
+    background: linear-gradient(90deg, #ff6f2d, #ff2e8b, #1d3cff, #00e5ff, #54f05a, #ff6f2d);
+    background-size: 200% 200%;
+    animation: frenzy-banner-border 5.5s linear infinite;
+  }
+
+  .frenzy-banner-star {
+    animation: frenzy-banner-twinkle 1.8s ease-in-out infinite;
+  }
+
+  .frenzy-banner-logo-active {
+    animation: frenzy-banner-pop 420ms ease-out;
+  }
+
+  .custom-banner-logo {
+    animation: custom-banner-float 2.8s ease-in-out infinite;
+  }
+
+  .bento-shell {
+    width: min(1520px, calc(100% - 2rem));
+    margin-inline: auto;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .bento-card {
+    border: 1px solid var(--border);
+    background: #ffffff;
+    padding: 1.2rem;
+  }
+
+  .bento-card-muted {
+    border: 1px solid var(--border);
+    background: #f1f1f1;
+    padding: 1.2rem;
+  }
+
+  .bento-tile-blue {
+    position: relative;
+    overflow: hidden;
+    background: #b7e8ff;
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='320' viewBox='0 0 420 320'%3E%3Ccircle cx='90' cy='56' r='88' fill='%23ffffff' fill-opacity='0.64'/%3E%3Ccircle cx='355' cy='260' r='126' fill='%23ffe866' fill-opacity='0.54'/%3E%3Cpath d='M-20 272C62 216 130 246 208 210C283 176 333 130 442 132V340H-20Z' fill='%23ffffff' fill-opacity='0.5'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bento-tile-pink {
+    position: relative;
+    overflow: hidden;
+    background: #f6bfd8;
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='320' viewBox='0 0 420 320'%3E%3Ccircle cx='300' cy='18' r='98' fill='%23ffffff' fill-opacity='0.64'/%3E%3Ccircle cx='68' cy='250' r='118' fill='%23b7e8ff' fill-opacity='0.56'/%3E%3Cpath d='M20 0H176L324 320H168Z' fill='%23ffffff' fill-opacity='0.62'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bento-pill {
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #000000;
+    transition: background-color 160ms ease;
+  }
+
+  .bento-pill:hover {
+    background: #f5f5f5;
+  }
+
+  .bento-title {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
+/* ───── Dark-mode CSS variables ─────
+ * Override the design tokens so anything painted through bg-background /
+ * bg-card / etc. flips automatically. Per-component nudges live below.
+ */
+html[data-theme="dark"] {
+  --background: #0a0913;
+  --foreground: #e8eaf1;
+  --card: #131320;
+  --card-foreground: #e8eaf1;
+  --popover: #15131f;
+  --popover-foreground: #e8eaf1;
+  --primary: #ffffff;
+  --primary-foreground: #0a0913;
+  --muted: rgba(255,255,255,0.05);
+  --muted-foreground: #8b8fa6;
+  --border: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] body { background: var(--background); color: var(--foreground); }
+html[data-theme="dark"] header { background: rgba(10,9,19,0.85) !important; }
+/* The frenzy chrome leans on a handful of explicit hex colors for the
+ * pill / chip surfaces. Map them onto dark-friendly equivalents. */
+html[data-theme="dark"] .bg-\[\#f7f7f7\]\/95 { background-color: rgba(10,9,19,0.92) !important; }
+html[data-theme="dark"] .bg-\[\#edf1f7\] { background-color: rgba(255,255,255,0.06) !important; }
+html[data-theme="dark"] .bg-\[\#f3f6f9\] { background-color: rgba(255,255,255,0.04) !important; }
+html[data-theme="dark"] .bg-\[\#f1f4f7\] { background-color: rgba(255,255,255,0.05) !important; }
+html[data-theme="dark"] .bg-\[\#fbfdff\] { background-color: rgba(255,255,255,0.08) !important; }
+html[data-theme="dark"] .bg-white { background-color: var(--card) !important; }
+html[data-theme="dark"] .text-black { color: var(--foreground) !important; }
+html[data-theme="dark"] .text-\[\#a9bbce\],
+html[data-theme="dark"] .text-\[\#8ea3ba\],
+html[data-theme="dark"] .text-\[\#9cafc4\],
+html[data-theme="dark"] .text-\[\#a5b4c2\] { color: #6f7593 !important; }
+html[data-theme="dark"] .text-\[\#687486\],
+html[data-theme="dark"] .text-\[\#5c6f80\],
+html[data-theme="dark"] .text-\[\#617485\] { color: #b7bccd !important; }
+html[data-theme="dark"] .border-\[\#d6dde5\],
+html[data-theme="dark"] .border-\[\#d9dfe6\],
+html[data-theme="dark"] .border-black\/10,
+html[data-theme="dark"] .border-black\/8 { border-color: rgba(255,255,255,0.1) !important; }
+html[data-theme="dark"] .bg-\[\#eaedf2\] { background-color: rgba(255,255,255,0.05) !important; }
+html[data-theme="dark"] .ticker-live-inner { background: var(--card) !important; }
+
+/* Additional dark-mode lifts for the specific palette hexes used in
+ * proposal rows + tabs + chips so text doesn't read as ghosted. */
+html[data-theme="dark"] .text-\[\#1f2933\] { color: #e8eaf1 !important; }
+html[data-theme="dark"] .text-\[\#4a5969\],
+html[data-theme="dark"] .text-\[\#788792\],
+html[data-theme="dark"] .text-\[\#6f8295\],
+html[data-theme="dark"] .text-\[\#7f92a6\] { color: #c7cad8 !important; }
+html[data-theme="dark"] .text-\[\#8fa1b3\],
+html[data-theme="dark"] .text-\[\#8fa3b8\],
+html[data-theme="dark"] .text-\[\#97a7b8\],
+html[data-theme="dark"] .text-\[\#a2b3be\],
+html[data-theme="dark"] .text-\[\#a5b4c2\],
+html[data-theme="dark"] .text-\[\#a9bbce\],
+html[data-theme="dark"] .text-\[\#9cafc4\] { color: #8b91a8 !important; }
+html[data-theme="dark"] .text-\[\#6c7b85\],
+html[data-theme="dark"] .text-\[\#687486\] { color: #a4a9bd !important; }
+html[data-theme="dark"] .text-\[\#001eff\] { color: #7b8af0 !important; }
+html[data-theme="dark"] .bg-\[\#eaedf2\],
+html[data-theme="dark"] .bg-\[\#f1f4f7\],
+html[data-theme="dark"] .bg-\[\#f3f6f8\],
+html[data-theme="dark"] .bg-\[\#f3f6f9\],
+html[data-theme="dark"] .bg-\[\#f7f7f7\],
+html[data-theme="dark"] .bg-\[\#f8f9fb\] { background-color: rgba(255,255,255,0.05) !important; }
+html[data-theme="dark"] .bg-\[\#edf1f7\],
+html[data-theme="dark"] .bg-\[\#edf3ff\],
+html[data-theme="dark"] .bg-\[\#eef4ff\],
+html[data-theme="dark"] .bg-\[\#fbfdff\] { background-color: rgba(255,255,255,0.07) !important; }
+/* Soft chip + pill backgrounds with alpha — bump so they don't disappear
+ * on the near-black page. */
+html[data-theme="dark"] .bg-\[rgba\(96\,128\,147\,0\.09\)\] { background-color: rgba(255,255,255,0.07) !important; }
