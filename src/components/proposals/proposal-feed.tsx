@@ -216,7 +216,7 @@ export function ProposalFeed() {
           ) : feedTab === "tokens" ? (
             <EmptyState
               message="Token metadata proposals are voted on inside the launchpad, not here. Each token has its own per-field vote."
-              cta={{ label: "Open launchpad", href: "https://launchpad.bwick.fun" }}
+              cta={{ label: "Open launchpad", href: "https://ansemchain.fun" }}
             />
           ) : filteredProposals.length === 0 ? (
             <EmptyState message="No proposals match your filters." />
