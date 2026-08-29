@@ -15,7 +15,10 @@
 // anchor - stable across regenesis, and not held in the config registry.
 export const BWICK_TREASURY =
   process.env.NEXT_PUBLIC_BWICK_TREASURY ??
-  "bwick1x20cudlvuqqdlsdwgfwhdv9t32jzqkwzmsvyj8";
+  // Canonical ANSEM treasury. This is also the recipient the reader filters tx
+  // history on (transfer.recipient=...), so a stale bwick1... default returned
+  // an empty proposal list ("No proposals match your filters").
+  "ansem1yhlt4665wr0geu6nej6nddgdn0dp03hxsm807a";
 
 import {
   PROP_PREFIX,

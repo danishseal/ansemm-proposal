@@ -54,7 +54,11 @@ const Ctx = createContext<WalletState | null>(null);
 
 const TREASURY =
   process.env.NEXT_PUBLIC_BWICK_TREASURY ??
-  "bwick1x20cudlvuqqdlsdwgfwhdv9t32jzqkwzmsvyj8";
+  // Canonical ANSEM treasury (deployer/admin + launchpad + flagship-proposal
+  // recipient). The old bwick1... default is a different chain's prefix, so the
+  // chain rejects the send ("hrp does not match bech32 prefix: expected 'ansem'
+  // got 'bwick'") and the proposal never lands.
+  "ansem1yhlt4665wr0geu6nej6nddgdn0dp03hxsm807a";
 // Chain max_memo_characters. Raised to 2048 via governance so multi-option
 // ballots and longer descriptions fit (a 10-option memo can be ~1.2KB).
 const MEMO_LIMIT = 2048;
