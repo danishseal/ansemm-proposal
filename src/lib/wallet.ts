@@ -19,6 +19,7 @@ interface KeplrLikeProvider {
 
 declare global {
   interface Window {
+    ansemWallet?: { cosmos?: KeplrLikeProvider };
     bwickWallet?: { cosmos?: KeplrLikeProvider };
     keplr?: KeplrLikeProvider;
   }
@@ -26,7 +27,9 @@ declare global {
 
 function providerFor(kind: WalletKind): KeplrLikeProvider | null {
   if (typeof window === "undefined") return null;
-  if (kind === "bwick") return window.bwickWallet?.cosmos ?? null;
+  // Current ANSEM extension injects under window.ansemWallet; older builds used
+  // window.bwickWallet. Prefer the new global, fall back to the legacy one.
+  if (kind === "bwick") return window.ansemWallet?.cosmos ?? window.bwickWallet?.cosmos ?? null;
   return window.keplr ?? null;
 }
 
@@ -41,7 +44,9 @@ export const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID ?? "ansem-1";
 export const RPC =
   process.env.NEXT_PUBLIC_BWICK_RPC ??
   process.env.NEXT_PUBLIC_RPC_ENDPOINT ??
-  "http://rpc.ansemchain.fun:26657";
+  // HTTPS via val1's Caddy TLS proxy (fronts CometBFT :26657). A plain http://
+  // or :port endpoint is blocked as mixed content on an HTTPS deploy.
+  "https://rpc.ansemchain.fun";
 export const DENOM = process.env.NEXT_PUBLIC_BWICK_DENOM ?? "uchanse";
 
 const CHAIN_INFO = {
@@ -51,7 +56,7 @@ const CHAIN_INFO = {
   rest:
     process.env.NEXT_PUBLIC_BWICK_REST ??
     process.env.NEXT_PUBLIC_REST_ENDPOINT ??
-    "http://rest.ansemchain.fun:1317",
+    "https://rest.ansemchain.fun",
   bip44: { coinType: 118 },
   bech32Config: {
     bech32PrefixAccAddr: "ansem",

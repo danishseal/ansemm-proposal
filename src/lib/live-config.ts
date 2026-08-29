@@ -19,7 +19,10 @@ const REGISTRY_CONTRACT =
 const BAKED_REST =
   process.env.NEXT_PUBLIC_BWICK_REST ??
   process.env.NEXT_PUBLIC_REST_ENDPOINT ??
-  "http://195.72.61.234:1317";
+  // HTTPS via val1's Caddy TLS proxy (fronts LCD :1317). A plain http:// or
+  // :port endpoint is blocked as mixed content on an HTTPS deploy ("failed to
+  // fetch").
+  "https://rest.ansemchain.fun";
 
 interface RegistryConfig {
   ansemRestUrlOverride: string;
