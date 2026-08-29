@@ -4,6 +4,7 @@
 //   2. window.keplr            — standalone Keplr extension
 
 import type { OfflineSigner } from "@cosmjs/proto-signing";
+import { secureEndpoint } from "./endpoint";
 
 export type WalletKind = "bwick" | "keplr";
 
@@ -41,22 +42,25 @@ export function availableWallets(): Array<{ kind: WalletKind; label: string }> {
 }
 
 export const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID ?? "ansem-1";
-export const RPC =
+export const RPC = secureEndpoint(
   process.env.NEXT_PUBLIC_BWICK_RPC ??
-  process.env.NEXT_PUBLIC_RPC_ENDPOINT ??
-  // HTTPS via val1's Caddy TLS proxy (fronts CometBFT :26657). A plain http://
-  // or :port endpoint is blocked as mixed content on an HTTPS deploy.
-  "https://rpc.ansemchain.fun";
+    process.env.NEXT_PUBLIC_RPC_ENDPOINT ??
+    // HTTPS via val1's Caddy TLS proxy (fronts CometBFT :26657). A plain http://
+    // or :port endpoint is blocked as mixed content on an HTTPS deploy;
+    // secureEndpoint() upgrades one back to the proxy even if injected via env.
+    "https://rpc.ansemchain.fun",
+);
 export const DENOM = process.env.NEXT_PUBLIC_BWICK_DENOM ?? "uchanse";
 
 const CHAIN_INFO = {
   chainId: CHAIN_ID,
   chainName: "ANSEM Chain",
   rpc: RPC,
-  rest:
+  rest: secureEndpoint(
     process.env.NEXT_PUBLIC_BWICK_REST ??
-    process.env.NEXT_PUBLIC_REST_ENDPOINT ??
-    "https://rest.ansemchain.fun",
+      process.env.NEXT_PUBLIC_REST_ENDPOINT ??
+      "https://rest.ansemchain.fun",
+  ),
   bip44: { coinType: 118 },
   bech32Config: {
     bech32PrefixAccAddr: "ansem",

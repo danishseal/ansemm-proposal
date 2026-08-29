@@ -1,5 +1,7 @@
 // Runtime config-registry resolver (proposals).
 //
+import { secureEndpoint } from "./endpoint";
+//
 // Launch model: the two baked anchors are the config-registry ADDRESS and the
 // REST endpoint - both genesis-stable. Proposals is a memo/treasury system: it
 // reads proposals from tx history filtered by the treasury recipient and holds
@@ -16,13 +18,15 @@ const REGISTRY_CONTRACT =
   process.env.NEXT_PUBLIC_ANSEM_REGISTRY ??
   "ansem1vguuxez2h5ekltfj9gjd62fs5k4rl2zy5hfrncasykzw08rezpfs766uxe";
 
-const BAKED_REST =
+const BAKED_REST = secureEndpoint(
   process.env.NEXT_PUBLIC_BWICK_REST ??
-  process.env.NEXT_PUBLIC_REST_ENDPOINT ??
-  // HTTPS via val1's Caddy TLS proxy (fronts LCD :1317). A plain http:// or
-  // :port endpoint is blocked as mixed content on an HTTPS deploy ("failed to
-  // fetch").
-  "https://rest.ansemchain.fun";
+    process.env.NEXT_PUBLIC_REST_ENDPOINT ??
+    // HTTPS via val1's Caddy TLS proxy (fronts LCD :1317). A plain http:// or
+    // :port endpoint is blocked as mixed content on an HTTPS deploy ("failed to
+    // fetch"); secureEndpoint() upgrades one back to the proxy on an https page
+    // even if it was injected via env.
+    "https://rest.ansemchain.fun",
+);
 
 interface RegistryConfig {
   ansemRestUrlOverride: string;
