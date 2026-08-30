@@ -13,12 +13,17 @@
 // REST endpoint is resolved at runtime via live-config (registry override or the
 // baked anchor). The treasury (proposal-submission recipient) is a baked env
 // anchor - stable across regenesis, and not held in the config registry.
+// Canonical ANSEM treasury. This is also the recipient the reader filters tx
+// history on (transfer.recipient=...), so the wrong value returns an empty
+// proposal list.
+const CANONICAL_TREASURY = "ansem1yhlt4665wr0geu6nej6nddgdn0dp03hxsm807a";
+// Honor an env override ONLY if it's an ansem1 address. A stale bwick1... left
+// on the Vercel project (a different chain's prefix) would silently make the
+// reader query the wrong account and show no proposals — ignore it.
 export const BWICK_TREASURY =
-  process.env.NEXT_PUBLIC_BWICK_TREASURY ??
-  // Canonical ANSEM treasury. This is also the recipient the reader filters tx
-  // history on (transfer.recipient=...), so a stale bwick1... default returned
-  // an empty proposal list ("No proposals match your filters").
-  "ansem1yhlt4665wr0geu6nej6nddgdn0dp03hxsm807a";
+  process.env.NEXT_PUBLIC_BWICK_TREASURY?.startsWith("ansem1")
+    ? process.env.NEXT_PUBLIC_BWICK_TREASURY
+    : CANONICAL_TREASURY;
 
 import {
   PROP_PREFIX,

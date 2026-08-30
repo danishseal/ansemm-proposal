@@ -52,13 +52,14 @@ interface WalletState {
 
 const Ctx = createContext<WalletState | null>(null);
 
+// Canonical ANSEM treasury (deployer/admin + launchpad + flagship-proposal
+// recipient). Only honor an env override if it's an ansem1 address; a stale
+// bwick1... (wrong chain prefix) would be rejected on send AND make the reader
+// query the wrong account, so ignore it and use the canonical value.
 const TREASURY =
-  process.env.NEXT_PUBLIC_BWICK_TREASURY ??
-  // Canonical ANSEM treasury (deployer/admin + launchpad + flagship-proposal
-  // recipient). The old bwick1... default is a different chain's prefix, so the
-  // chain rejects the send ("hrp does not match bech32 prefix: expected 'ansem'
-  // got 'bwick'") and the proposal never lands.
-  "ansem1yhlt4665wr0geu6nej6nddgdn0dp03hxsm807a";
+  process.env.NEXT_PUBLIC_BWICK_TREASURY?.startsWith("ansem1")
+    ? process.env.NEXT_PUBLIC_BWICK_TREASURY
+    : "ansem1yhlt4665wr0geu6nej6nddgdn0dp03hxsm807a";
 // Chain max_memo_characters. Raised to 2048 via governance so multi-option
 // ballots and longer descriptions fit (a 10-option memo can be ~1.2KB).
 const MEMO_LIMIT = 2048;
